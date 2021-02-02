@@ -25,7 +25,6 @@ def main():
 
         # DLT methods according to norm flag
         if args.norm:
-            print("norm???")
             homography = dltnorm(pts, target_pts)
         else:
             homography = dlt(pts, target_pts)

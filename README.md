@@ -61,11 +61,11 @@ This project focuses on topics:
 ### Implement DLT algorithm and the normalized DLT version to perform perspective correction to license plates.
 
 ```
-- image registration using Mutual Information Neural Estimator (MINE) as the loss
-python Multi_resolution_Homography_MINE.py 
+- perspective correction to license plates using DLT algorithm
+python dlt\eval.py -i dlt/images -n dlt/gt
 
-- image registration using normalized cross-correlation (NCC) as the loss
-python Multi_resolution_Homography_NCC.py
+- perspective correction to license plates using normalized DLT algorithm
+python dlt\eval.py -i dlt/images -n dlt/gt --norm
 
 - image registration using structural similarity index measure (SSIM) as the loss
 python Multi_resolution_Homography_SSIM.py

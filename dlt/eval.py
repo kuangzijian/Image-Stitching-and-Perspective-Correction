@@ -8,7 +8,7 @@ def main():
     ap.add_argument("-i", "--srcdir", help = "path to the images directory")
     ap.add_argument("-n", "--gtdir", help = "path to npy groundtruth directory")
     ap.add_argument("--norm", action="store_true")
-    args = ap.parse_args(['-i', 'images', '-n', 'gt'])
+    args = ap.parse_args()
 
     error = 0
     files = os.listdir(args.srcdir)
@@ -21,10 +21,15 @@ def main():
 
         pts = np.array(points, np.int32)
         pts = pts.reshape((-1, 1, 2))
-        target_points = compute_target_points(pts)
+        target_pts = compute_target_points(pts)
 
-        # TODO: Call your DLT methods according to norm flag
-        # homography = dlt(points)
+        # DLT methods according to norm flag
+        if args.norm:
+            print("norm???")
+            homography = dltnorm(pts, target_pts)
+        else:
+            homography = dlt(pts, target_pts)
+
         # error += np.linalg.norm(homography.flatten() - homography_gt.flatten())**2
 
         # visualize the result
@@ -42,7 +47,11 @@ def main():
 
     print('Total Mean Squared Error: ', error/len(files))
 
-def dlt(points):
+def dlt(src_pst, target_pst):
+    homography = []
+    return homography
+
+def dltnorm(src_pst, target_pst):
     homography = []
     return homography
 

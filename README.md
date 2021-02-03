@@ -67,9 +67,9 @@ python dlt\eval.py -i dlt/images -n dlt/gt
 - perspective correction to license plates using normalized DLT algorithm
 python dlt\eval.py -i dlt/images -n dlt/gt --norm
 
-- image registration using structural similarity index measure (SSIM) as the loss
-python Multi_resolution_Homography_SSIM.py
+The visualized results will show up once program starts running:
 ```
+![1](https://github.com/kuangzijian/Group-Activity-Recognition/blob/master/read_me_pictures/experiments.png)
 
 ### Perform Image warping and stitching using OpenCV for the warping and visualise.
 

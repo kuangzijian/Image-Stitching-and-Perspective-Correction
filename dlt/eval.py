@@ -2,12 +2,15 @@ import os
 import numpy as np
 import argparse
 import cv2
+from dlt import dlt
+from dltnorm import dltnorm
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("-i", "--srcdir", help = "path to the images directory")
     ap.add_argument("-n", "--gtdir", help = "path to npy groundtruth directory")
     ap.add_argument("--norm", action="store_true")
+    #args = ap.parse_args(['-i', 'images', '-n', 'gt', '--norm'])
     args = ap.parse_args()
 
     error = 0
@@ -25,11 +28,15 @@ def main():
 
         # DLT methods according to norm flag
         if args.norm:
-            homography = dltnorm(pts, target_pts)
+            homography = dltnorm(points, target_pts)
+            print('Calculate homography using Normalized DLT, error: ',
+                  np.linalg.norm(homography.flatten() - homography_gt.flatten())**2)
         else:
-            homography = dlt(pts, target_pts)
+            homography = dlt(points, target_pts)
+            print('Calculate homography using DLT, error: ',
+                  np.linalg.norm(homography.flatten() - homography_gt.flatten())**2)
 
-        # error += np.linalg.norm(homography.flatten() - homography_gt.flatten())**2
+        error += np.linalg.norm(homography.flatten() - homography_gt.flatten())**2
 
         # visualize the result
         mask = np.zeros((image.shape[0], image.shape[1]))
@@ -38,21 +45,13 @@ def main():
         cropped = np.zeros_like(image)
         cropped[mask] = image[mask]
 
-        cv2.polylines(image, [pts], True, (0, 255, 0), 2)
-        warped = cv2.warpPerspective(cropped, homography_gt, (cropped.shape[:2][1], cropped.shape[:2][0]))
+        cv2.polylines(image, [pts], True, (0, 0, 255), 2)
+        warped = cv2.warpPerspective(cropped, homography, (cropped.shape[:2][1], cropped.shape[:2][0]))
         concatenated = np.hstack((image, warped)).astype(np.uint8)
         cv2.imshow('results', concatenated)
         cv2.waitKey(1500)
 
     print('Total Mean Squared Error: ', error/len(files))
-
-def dlt(src_pst, target_pst):
-    homography = []
-    return homography
-
-def dltnorm(src_pst, target_pst):
-    homography = []
-    return homography
 
 def compute_target_points(src_points):
   # Order points and compute src points in the image

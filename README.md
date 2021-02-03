@@ -69,7 +69,7 @@ python dlt\eval.py -i dlt/images -n dlt/gt --norm
 
 The visualized results will show up once program starts running:
 ```
-![1](https://github.com/kuangzijian/Group-Activity-Recognition/blob/master/read_me_pictures/experiments.png)
+![1](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/dlt.png)
 
 ### Perform Image warping and stitching using OpenCV for the warping and visualise.
 

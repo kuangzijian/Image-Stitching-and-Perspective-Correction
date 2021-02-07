@@ -74,12 +74,15 @@ The visualized results will show up once program starts running:
 ### Perform Image warping and stitching using OpenCV for the warping and visualise.
 
 ```
-- image stitching uses the ORB feature detection to merge "Picture1.jpg" and "Picture2.jpg"
-python ImageStitching_ORB.py
+- Image stitching using RANSAC
+python overdetermined/image_stitching.py -f overdetermined/fishbowl/fishbowl-00.png -s overdetermined/fishbowl/fishbowl-01.png -r results
+or
+python overdetermined/image_stitching.py -f overdetermined/office/office-00.png -s overdetermined/office/office-01.png -r results
 
-- image stitching uses the SFIT feature detection to merge "knee1.jpg" and "knee2.jpg"
-python ImageStitching_SIFT.py
-
+- Image stitching using LMedS
+python overdetermined/image_stitching.py -f overdetermined/fishbowl/fishbowl-00.png -s overdetermined/fishbowl/fishbowl-01.png -r results --lmeds
+or
+python overdetermined/image_stitching.py -f overdetermined/office/office-00.png -s overdetermined/office/office-01.png -r results --lmeds
 ```
 
 ### Use OpenCV to detect and visualise the lines in the image and Compute the Vanishing point and visualise on the image.

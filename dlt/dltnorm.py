@@ -26,6 +26,7 @@ def dltnorm(src_pts, target_pts):
 
     # Denormalization: denormalize the homography back
     H = np.dot(np.dot(np.linalg.pinv(T_prime), H_tilde), T)
+    H = H/H[-1, -1]
 
     return H
 

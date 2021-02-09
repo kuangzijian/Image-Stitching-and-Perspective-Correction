@@ -31,13 +31,15 @@ def dltnorm(src_pts, target_pts):
     return H
 
 def normalization(pts):
-    mean, std = np.mean(pts, 0), np.std(pts)
+    N = len(pts)
+    mean = np.mean(pts, 0)
+    s = np.linalg.norm((pts-mean), axis=1).sum() / (N * np.sqrt(2))
 
     # Compute a similarity transformation T, moves original points to
     # new set of points, such that the new centroid is the origin,
     # and the average distance from origin is square root of 2
-    T = np.array([[std/np.sqrt(2), 0, mean[0]],
-                  [0, std/np.sqrt(2), mean[1]],
+    T = np.array([[s, 0, mean[0]],
+                  [0, s, mean[1]],
                   [0, 0, 1]])
     T = np.linalg.inv(T)
     pts = np.dot(T, np.concatenate((pts.T, np.ones((1, pts.shape[0])))))

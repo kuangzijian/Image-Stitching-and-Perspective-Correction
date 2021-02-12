@@ -4,10 +4,10 @@ import numpy as np
 import cv2
 from skimage.feature import match_descriptors
 from skimage.feature import plot_matches
-from skimage.transform import ProjectiveTransform
-from skimage.measure import ransac
 from skimage.transform import SimilarityTransform
 from skimage.transform import warp
+from ransac import ransac
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -15,11 +15,11 @@ def main():
     ap.add_argument("-s", "--second_image_dir", help="path to the second image")
     ap.add_argument("-r", "--results_dir", help="path to the visualization result")
     ap.add_argument("--lmeds", action="store_true")
-    # args = ap.parse_args(['-f', '../overdetermined/office/office-00.png',
-    #                       '-s', '../overdetermined/office/office-01.png',
-    #                       '-r', '../results',
-    #                       '--lmeds'])
-    args = ap.parse_args()
+    args = ap.parse_args(['-f', '../overdetermined/office/office-00.png',
+                          '-s', '../overdetermined/office/office-01.png',
+                          '-r', '../results',
+                          '--lmeds'])
+    #args = ap.parse_args()
 
     #I0 = cv2.imread("../overdetermined/fishbowl/fishbowl-00.png")
     I0 = cv2.imread(args.first_image_dir)
@@ -83,13 +83,11 @@ def main():
     src = keypoints1[matches[:, 1]][:, ::-1]
     dst = keypoints0[matches[:, 0]][:, ::-1]
 
-    # Decided the best parameter for this case with residual_threshold=5, and max_trials=1500
-    model_robust01, inliers01 = ransac((src, dst), ProjectiveTransform,
-                                       min_samples=4, residual_threshold=5, max_trials=1500)
-
-    fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+    # Find best matches using Ransac
+    homograhpy, inliers01 = ransac((src, dst), threshold_distance=0.8, threshold_inliers=0.3, max_trials=500)
 
     # Best match subset for pano0 -> pano1
+    fig, ax = plt.subplots(1, 1, figsize=(10, 5))
     plot_matches(ax, I0, I1, keypoints0, keypoints1, matches[inliers01])
     ax.axis('off')
     fig.suptitle('Best matching after RANSAC (or LMedS)', fontsize=20)
@@ -97,64 +95,29 @@ def main():
     cv2.imshow('ransac matching', cv2.imread(args.results_dir+'/ransac_matching.png'))
     cv2.waitKey(10)
 
-    # Shape registration target
-    r, c = pano0.shape[:2]
+    # Image warping and stitching
+    xh = np.linalg.inv(homograhpy)
+    ds = np.dot(xh, np.array([pano1.shape[1], pano1.shape[0], 1]))
+    ds = ds / ds[-1]
+    print("final ds=>", ds)
+    f1 = np.dot(xh, np.array([0, 0, 1]))
+    f1 = f1 / f1[-1]
+    xh[0][-1] += abs(f1[0])
+    xh[1][-1] += abs(f1[1])
+    ds = np.dot(xh, np.array([pano1.shape[1], pano1.shape[0], 1]))
+    offsety = abs(int(f1[1]))
+    offsetx = abs(int(f1[0]))
+    dsize = (int(ds[0]) + offsetx, int(ds[1]) + offsety)
+    print("image dsize =>", dsize)
+    tmp = cv2.warpPerspective(a, xh, dsize)
 
-    # Note that transformations take coordinates in (x, y) format,
-    # not (row, column), in order to be consistent with most literature
-    corners = np.array([[0, 0],
-                        [0, r],
-                        [c, 0],
-                        [c, r]])
-
-    # Warp the image corners to their new positions
-    warped_corners01 = model_robust01(corners)
-
-    # Find the extents of both the reference image and the warped
-    # target image
-    all_corners = np.vstack((warped_corners01, corners))
-
-    # The overally output shape will be max - min
-    corner_min = np.min(all_corners, axis=0)
-    corner_max = np.max(all_corners, axis=0)
-    output_shape = (corner_max - corner_min)
-
-    # Ensure integer shape with np.ceil and dtype conversion
-    output_shape = np.ceil(output_shape[::-1]).astype(int)
-
-    # This in-plane offset is the only necessary transformation for the middle image
-    offset1 = SimilarityTransform(translation= -corner_min)
-
-
-    # Warp pano1 to pano0 using 3rd order interpolation
-    transform01 = (model_robust01 + offset1).inverse
-    I1_warped = warp(I1, transform01, order=3,
-                        output_shape=output_shape, cval=-1)
-
-    I1_mask = (I1_warped != -1)  # Mask == 1 inside image
-    I1_warped[~I1_mask] = 0      # Return background values to 0
-
-
-    # Translate pano0 into place
-    I0_warped = warp(I0, offset1.inverse, order=3,
-                        output_shape=output_shape, cval=-1)
-
-    I0_mask = (I0_warped != -1)  # Mask == 1 inside image
-    I0_warped[~I0_mask] = 0      # Return background values to 0
-
-    # Add the images together. This could create dtype overflows!
-    # We know they are are floating point images after warping, so it's OK.
-    merged = (I0_warped + I1_warped)
-
-    # Track the overlap by adding the masks together
-    overlap = (I0_mask * 1.0 +  # Multiply by 1.0 for bool -> float conversion
-               I1_mask)
-
-    # Normalize through division by `overlap` - but ensure the minimum is 1
-    normalized = merged / np.maximum(overlap, 1)
+    print(pano0.shape[1] + offsetx)
+    t = tmp[offsety:pano0.shape[0] + offsety, offsetx:pano0.shape[1] + offsetx].shape
+    pano0 = pano0[:, 0:t[1]]
+    tmp[offsety:pano0.shape[0] + offsety, offsetx:pano0.shape[1] + offsetx] = pano0
 
     fig, ax = plt.subplots(1, 1, figsize=(10, 5))
-    plt.imshow(normalized, cmap="gray")
+    plt.imshow(tmp, cmap="gray")
     fig.suptitle('Image Stitching Result', fontsize=20)
     fig.savefig(args.results_dir+'/stitching_result.png', dpi=fig.dpi)
     cv2.imshow('stitching result', cv2.imread(args.results_dir+'/stitching_result.png'))

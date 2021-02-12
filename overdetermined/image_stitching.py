@@ -17,10 +17,11 @@ def main():
     ap.add_argument("-s", "--second_image_dir", help="path to the second image")
     ap.add_argument("-r", "--results_dir", help="path to the visualization result")
     ap.add_argument("--lmeds", action="store_true")
-    # args = ap.parse_args(['-f', '../overdetermined/office/office-00.png',
-    #                       '-s', '../overdetermined/office/office-01.png',
-    #                       '-r', '../results'])
-    args = ap.parse_args()
+    args = ap.parse_args(['-f', '../overdetermined/fishbowl/fishbowl-00.png',
+                          '-s', '../overdetermined/fishbowl/fishbowl-01.png',
+                          '-r', '../results',
+                          '--lmeds'])
+    #args = ap.parse_args()
 
     I0 = cv2.imread(args.first_image_dir)
     pano0 = cv2.cvtColor(I0, cv2.COLOR_BGR2GRAY)
@@ -39,7 +40,7 @@ def main():
 
     # Visualize the detected and matched features
     fig, ax = plt.subplots(1, 2, figsize=(10, 5))
-    fig.suptitle('Detected and matched features', fontsize=20)
+    fig.suptitle('1. Detected and matched features', fontsize=20)
     plt.subplot(121)
     plt.imshow(cv2.drawKeypoints(pano0, kp0, None), cmap="gray")
     plt.title("Image 0 keypoints")
@@ -73,7 +74,7 @@ def main():
     fig, ax = plt.subplots(1, 1, figsize=(10, 5))
     plot_matches(ax, I0, I1, keypoints0, keypoints1, matches)
     ax.axis('off')
-    fig.suptitle('Initial matching', fontsize=20)
+    fig.suptitle('2. Initial matching', fontsize=20)
     fig.savefig(args.results_dir+'/initial_matching.png', dpi=fig.dpi)
     cv2.imshow('initial matching', cv2.imread(args.results_dir+'/initial_matching.png'))
     cv2.waitKey(10)
@@ -88,11 +89,11 @@ def main():
     if(args.lmeds):
         homography, inliers01 = lmeds((src, dst), threshold_distance=0.8, threshold_inliers=0.3, max_trials=500)
         print('3. Using LMedS to find the best matching')
-        title = 'Best matching after LMedS'
+        title = '3. Best matching after LMedS'
     else:
         homography, inliers01 = ransac((src, dst), threshold_distance=0.8, threshold_inliers=0.3, max_trials=500)
         print('3. Using RANSAC to find the best matching')
-        title = 'Best matching after RANSAC'
+        title = '3. Best matching after RANSAC'
 
     # Best match subset for pano0 -> pano1
     fig, ax = plt.subplots(1, 1, figsize=(10, 5))
@@ -108,7 +109,7 @@ def main():
     result = stitching(homography, pano0, I0, I1)
     fig, ax = plt.subplots(1, 1, figsize=(10, 5))
     plt.imshow(result, cmap="gray")
-    fig.suptitle('Image Stitching Result', fontsize=20)
+    fig.suptitle('4. Image Stitching Result', fontsize=20)
     fig.savefig(args.results_dir+'/stitching_result.png', dpi=fig.dpi)
     cv2.imshow('stitching result', cv2.imread(args.results_dir+'/stitching_result.png'))
     print("You can also review the generated visualization results in the 'results' folder. Press any key to exit.")

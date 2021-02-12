@@ -94,8 +94,12 @@ python ImageStitching_ORB.py
 - image stitching uses the SFIT feature detection to merge "knee1.jpg" and "knee2.jpg"
 python ImageStitching_SIFT.py
 
+The visualized results will show up once program starts running:
 ```
-
+![1](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/keypoints.png)
+![2](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/initial_matching.png)
+![3](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/ransac_matching.png)
+![4](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/stitching_result.png)
 
 ## Contributing
 

@@ -1,6 +1,6 @@
 import numpy as np
-from skimage.transform import ProjectiveTransform
-from dlt.dlt import dlt
+from dlt import dlt
+
 def ransac(data, threshold_distance, threshold_inliers=0, max_trials=100):
     random_state = np.random.mtrand._rand
     num_samples = len(data[0])

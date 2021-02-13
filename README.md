@@ -50,7 +50,7 @@ This project focuses on topics:
 * Use OpenCV to detect and visualise the lines in the image and Compute the Vanishing point and visualise on the image.
 
 ### Built With
-* [Pytorch](https://github.com/pytorch)
+* [OpenCV](https://opencv.org/)
 
 ### Prerequisites
 ```sh

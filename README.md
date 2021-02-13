@@ -93,15 +93,12 @@ The visualized results will show up once program starts running:
 ### Use OpenCV to detect and visualise the lines in the image and Compute the Vanishing point and visualise on the image.
 
 ```
-- image stitching uses the ORB feature detection to merge "Picture1.jpg" and "Picture2.jpg"
-python ImageStitching_ORB.py
-
-- image stitching uses the SFIT feature detection to merge "knee1.jpg" and "knee2.jpg"
-python ImageStitching_SIFT.py
+- Computing Hough Lines and Vanishing Point
+python vanishing_pt/vanishing_point.py -i vanishing_pt/carla.png -r results
 
 The visualized results will show up once program starts running:
 ```
-
+![1](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/line_detection.png) | ![2](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/vanishing_point.png)
 
 ## Contributing
 

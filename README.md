@@ -83,7 +83,12 @@ python overdetermined/image_stitching.py -f overdetermined/office/office-00.png 
 python overdetermined/image_stitching.py -f overdetermined/fishbowl/fishbowl-00.png -s overdetermined/fishbowl/fishbowl-01.png -r results --lmeds
 or
 python overdetermined/image_stitching.py -f overdetermined/office/office-00.png -s overdetermined/office/office-01.png -r results --lmeds
+
+The visualized results will show up once program starts running:
 ```
+![1](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/keypoints.png) | ![2](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/initial_matching.png)
+:-------------------------:|:-------------------------:
+![3](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/ransac_matching.png) | ![4](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/stitching_result.png)
 
 ### Use OpenCV to detect and visualise the lines in the image and Compute the Vanishing point and visualise on the image.
 
@@ -96,10 +101,7 @@ python ImageStitching_SIFT.py
 
 The visualized results will show up once program starts running:
 ```
-![1](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/keypoints.png)
-![2](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/initial_matching.png)
-![3](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/ransac_matching.png)
-![4](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/stitching_result.png)
+
 
 ## Contributing
 

@@ -17,11 +17,11 @@ def main():
     ap.add_argument("-s", "--second_image_dir", help="path to the second image")
     ap.add_argument("-r", "--results_dir", help="path to the visualization result")
     ap.add_argument("--lmeds", action="store_true")
-    args = ap.parse_args(['-f', '../overdetermined/fishbowl/fishbowl-00.png',
-                          '-s', '../overdetermined/fishbowl/fishbowl-01.png',
-                          '-r', '../results',
-                          '--lmeds'])
-    #args = ap.parse_args()
+    # args = ap.parse_args(['-f', '../overdetermined/fishbowl/fishbowl-00.png',
+    #                       '-s', '../overdetermined/fishbowl/fishbowl-01.png',
+    #                       '-r', '../results',
+    #                       '--lmeds'])
+    args = ap.parse_args()
 
     I0 = cv2.imread(args.first_image_dir)
     pano0 = cv2.cvtColor(I0, cv2.COLOR_BGR2GRAY)

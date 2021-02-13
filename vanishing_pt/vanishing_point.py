@@ -36,12 +36,12 @@ def main():
 
     # # Visualize the detected lines
     cv2.imshow('line detection', img1)
-    cv2.imwrite(args.results_dir+'line_detection.png', img1)
+    cv2.imwrite(args.results_dir+'/line_detection.png', img1)
 
     # Visualize the vanishing point
     cv2.circle(img2, (most_point[0][0], most_point[0][1]), radius=6, color=(0, 0, 255), thickness=3)
     cv2.imshow('vanishing point', img2)
-    cv2.imwrite(args.results_dir + 'vanishing_point.png', img2)
+    cv2.imwrite(args.results_dir + '/vanishing_point.png', img2)
     print("You can also review the generated visualization results in the 'results' folder. Press any key to exit.")
     cv2.waitKey()
 

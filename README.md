@@ -46,8 +46,8 @@ Image Stitching and Perspective Correction
 
 This project focuses on topics:
 * Implement DLT algorithm and the normalized DLT version to perform perspective correction to license plates.
-* Perform Image warping and stitching using OpenCV for the warping and visualise.
-* Use OpenCV to detect and visualise the lines in the image and Compute the Vanishing point and visualise on the image.
+* Perform Image warping and stitching using OpenCV for the warping and visualization.
+* Use OpenCV to detect and visualize the lines in the image and Compute the Vanishing point and visualize on the image.
 
 ### Built With
 * [OpenCV](https://opencv.org/)
@@ -71,7 +71,7 @@ The visualized results will show up once program starts running:
 ```
 ![1](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/dlt.png)
 
-### Perform Image warping and stitching using OpenCV for the warping and visualise.
+### Perform Image warping and stitching using OpenCV for the warping and visualization.
 
 ```
 - Image stitching using RANSAC
@@ -90,7 +90,7 @@ The visualized results will show up once program starts running:
 :-------------------------:|:-------------------------:
 ![3](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/ransac_matching.png) | ![4](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/stitching_result.png)
 
-### Use OpenCV to detect and visualise the lines in the image and Compute the Vanishing point and visualise on the image.
+### Use OpenCV to detect and visualize the lines in the image and Compute the Vanishing point and visualize on the image.
 
 ```
 - Computing Hough Lines and Vanishing Point
@@ -99,6 +99,7 @@ python vanishing_pt/vanishing_point.py -i vanishing_pt/carla.png -r results
 The visualized results will show up once program starts running:
 ```
 ![1](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/line_detection.png) | ![2](https://github.com/kuangzijian/Image-Stitching-and-Perspective-Correction/blob/main/results/vanishing_point.png)
+:-------------------------:|:-------------------------:
 
 ## Contributing
 

@@ -118,7 +118,9 @@ Contributions are what make the open source community such an amazing place to b
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ## References
-NCC https://github.com/rogerberm/pytorch-ncc
+DLT https://eclass.srv.ualberta.ca/pluginfile.php/6697009/mod_resource/content/6/Lec03%281%29.pdf
 
-SSIM (https://github.com/Po-Hsun-Su/pytorch-ssim)
+Ransac https://eclass.srv.ualberta.ca/pluginfile.php/6697009/mod_resource/content/6/Lec03%281%29.pdf
+
+LMEDS http://www-sop.inria.fr/odyssee/software/old_robotvis/Tutorial-Estim/node25.html
 
